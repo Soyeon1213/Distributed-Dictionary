@@ -1,0 +1,66 @@
+@startuml
+class server.ServerGUI {
+- JFrame frame
+- {static} JTextArea logArea
+- JButton startButton
+- JButton stopButton
+- Server server
++ void show()
+- void initialize()
++ void appendLog(String)
+}
+
+
+class client.Client {
+- Socket socket
+- DataInputStream input
+- DataOutputStream output
+- ClientGUI clientGUI
++ void setGUI(ClientGUI)
++ {static} void main(String[])
++ String sendRequest(String,String,String)
++ void disconnect()
++ boolean isConnected()
+}
+
+
+class server.Server {
+- int port
+- {static} String filepath
+- {static} ServerSocket serverSocket
+~ {static} ConcurrentHashMap<String,List<String>> dictionary
+- {static} ConcurrentHashMap<Socket,Thread> connectedClients
+- {static} boolean isRunning
+- {static} ServerGUI gui
++ void setGUI(ServerGUI)
++ {static} void main(String[])
++ void startServer()
+- {static} void serveClient(Socket)
++ {static} void readDictionary()
++ {static} void printAllWords()
++ void closeServer()
++ {static} void saveDictionary()
+}
+
+
+class client.ClientGUI {
+- Client client
+- JTextArea textArea
+- JButton btnQuery
+- void initializeUI()
+- void queryWord()
+- void addWord()
+- void removeWord()
+- void updateWord()
+- void disconnect()
++ void connectionLost()
+- void disableButtons()
++ void disableEditing()
++ {static} String capitalizeFirstLetter(String)
+}
+
+
+
+
+client.JFrame <|-- client.ClientGUI
+@enduml
